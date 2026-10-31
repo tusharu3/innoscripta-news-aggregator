@@ -9,7 +9,7 @@ RUN npm run build
 
 # ---- runtime: static files + reverse proxy that injects API keys ----
 # Unprivileged variant: nginx runs as a non-root user and listens on 8080.
-FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
+FROM nginxinc/nginx-unprivileged:1.31-alpine AS runtime
 # Keys are read at container start (not build time), so one image works for any environment
 # and secrets never end up in an image layer. Empty defaults keep envsubst from leaving
 # unresolved ${...} in the nginx config.
