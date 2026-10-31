@@ -73,6 +73,9 @@
     display: flex;
     flex-direction: column;
     gap: space('2');
+    // Grid items default to min-width: auto, so a long nowrap byline would widen the body
+    // past the card and clip the follow button. 0 lets the author ellipsis kick in instead.
+    min-width: 0;
     padding: space('5');
   }
 

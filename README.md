@@ -104,13 +104,14 @@ docs/           Detailed documentation (below)
 
 ## Documentation
 
-| Doc                                                                                                        | Read it for                                                                            |
-| ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md)                                                                    | **Start here.** An index of every feature and technique, with where it lives and why   |
-| [DESIGN.md](docs/DESIGN.md)                                                                                | innoscripta design tokens, accessibility trade-offs, CSS architecture                  |
-| [DATA_FLOW.md](docs/DATA_FLOW.md)                                                                          | From keystroke to rendered cards. Where each piece of state lives.                     |
-| [DECISIONS.md](docs/DECISIONS.md)                                                                          | 15 short ADRs (for example why there's no Redux, and why infinite scroll has a button) |
-| [TESTING.md](docs/TESTING.md) · [CODE_GUIDELINES.md](docs/CODE_GUIDELINES.md) · [SECURITY.md](SECURITY.md) | Test strategy, conventions, threat model                                               |
+| Doc                                                                                                        | Read it for                                                                                      |
+| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [DOCKER.md](docs/DOCKER.md)                                                                                | Beginner's Docker guide: how the image works, how to run it, and a 9-step verification checklist |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md)                                                                    | **Start here.** An index of every feature and technique, with where it lives and why             |
+| [DESIGN.md](docs/DESIGN.md)                                                                                | innoscripta design tokens, accessibility trade-offs, CSS architecture                            |
+| [DATA_FLOW.md](docs/DATA_FLOW.md)                                                                          | From keystroke to rendered cards. Where each piece of state lives.                               |
+| [DECISIONS.md](docs/DECISIONS.md)                                                                          | 15 short ADRs (for example why there's no Redux, and why infinite scroll has a button)           |
+| [TESTING.md](docs/TESTING.md) · [CODE_GUIDELINES.md](docs/CODE_GUIDELINES.md) · [SECURITY.md](SECURITY.md) | Test strategy, conventions, threat model                                                         |
 
 ## AI-assisted workflow
 
