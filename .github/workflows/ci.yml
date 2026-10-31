@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least privilege: the workflow only needs to read the repository.
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Security checks (dependency audit + secret and unsafe-pattern scan)
+        run: npm run security
+      - run: npm run format:check
+      - run: npm run verify
+      - run: npm run build-storybook -- --quiet
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t news-aggregator .
+      - name: Smoke test container
+        run: |
+          docker run -d --name app -p 8080:8080 news-aggregator
+          for i in $(seq 1 20); do curl -fs http://localhost:8080/ >/dev/null && break; sleep 1; done
+          curl -fs http://localhost:8080/ | grep -q '<div id="root">'
+          curl -fs http://localhost:8080/search | grep -q '<div id="root">'            # SPA fallback
+          curl -fs http://localhost:8080/api/bbc/news/rss.xml | grep -q '<rss'          # proxy works
+          curl -sI http://localhost:8080/ | grep -qi 'content-security-policy'          # security headers
+          curl -sI http://localhost:8080/ | grep -qi 'x-content-type-options: nosniff'
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST http://localhost:8080/api/bbc/news/rss.xml)" = 403   # GET-only proxy
+          docker exec app id -u | grep -vq '^0$'                                         # not running as root

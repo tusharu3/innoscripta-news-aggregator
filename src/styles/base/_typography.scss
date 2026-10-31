@@ -1,0 +1,38 @@
+@use '../abstracts' as *;
+
+body {
+  background: color('canvas');
+  color: color('text');
+  font-family: var(--font-family-base);
+  @include type('body');
+}
+
+h1,
+h2,
+h3 {
+  color: color('text');
+  font-weight: 600;
+}
+
+// Balanced headings and no orphans in paragraphs, where supported.
+@supports (text-wrap: balance) {
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+a {
+  color: color('link');
+  text-underline-offset: 0.2em;
+}
+
+::selection {
+  background: color('accent-soft');
+  color: color('text');
+}

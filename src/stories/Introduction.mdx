@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introduction" />
+
+# Newsroom design system
+
+A component library for the Newsroom news aggregator, styled after **innoscripta.com**:
+Poppins typography, a navy and blue palette, the blue→turquoise brand gradient, pill-shaped controls and white cards with a hairline border.
+
+**How to read this Storybook**
+
+- **Foundations / Design tokens** shows colours, type, spacing, radii and shadows, read live from the CSS variables.
+- **Components** are the reusable primitives (Button, ChipToggle, PageHeader, EmptyState).
+- **Features** are domain components (ArticleCard, FilterBar).
+- **Pages** are complete screens running on fake news sources, including loading, partial-failure and empty states.
+
+Every story is wrapped in the app's real providers (TanStack Query, router, `SourcesProvider`) with fake sources,
+so nothing hits the network and no API keys are needed. Use the **viewport** toolbar to check each breakpoint,
+and the **Accessibility** panel to see axe results for the current story.
+
+Design rationale and trade-offs are in `docs/DESIGN.md`.

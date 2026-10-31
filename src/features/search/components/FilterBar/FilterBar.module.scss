@@ -1,0 +1,149 @@
+@use 'abstracts' as *;
+
+// Block: .filter-bar
+.filter-bar {
+  display: grid;
+  gap: space('4');
+  margin-bottom: space('8');
+
+  // --- Keyword pill (mirrors the URL field on innoscripta's hero) -------------
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: space('3');
+    width: min(100%, 44rem);
+    min-height: 3.5rem;
+    margin-inline: auto;
+    padding-inline: space('5');
+    border: 1px solid color('border-strong');
+    border-radius: radius('pill');
+    background: color('surface');
+    color: color('text-muted');
+    box-shadow: shadow('sm');
+    transition:
+      border-color duration('fast'),
+      box-shadow duration('fast');
+
+    // The whole pill shows focus while the input inside it is focused.
+    &:focus-within {
+      border-color: color('accent');
+      box-shadow: shadow('focus');
+    }
+  }
+
+  &__search-input {
+    flex: 1;
+    min-width: 0;
+    height: 3.5rem;
+    border: 0;
+    background: transparent;
+    color: color('text');
+    font-size: 1rem; // 16px: no iOS zoom on focus
+    outline: none; // focus is drawn on the pill via :focus-within
+
+    &::placeholder {
+      color: color('text-subtle');
+    }
+  }
+
+  // --- Phone disclosure button --------------------------------------------------
+  &__toggle {
+    @extend %pill;
+    @include type('small');
+    justify-self: center;
+    min-height: 2.5rem;
+    padding-inline: space('4');
+    border-color: color('border-strong');
+    background: color('surface');
+    color: color('text');
+    font-weight: 600;
+
+    &[aria-expanded='true'] {
+      border-color: color('accent');
+      color: color('link');
+    }
+
+    @include mq(md) {
+      display: none;
+    }
+  }
+
+  &__badge {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding-inline: space('1');
+    border-radius: radius('pill');
+    background: var(--gradient-action);
+    color: color('on-action');
+    @include type('caption');
+    font-weight: 600;
+  }
+
+  // --- Filter panel ---------------------------------------------------------------
+  &__panel {
+    @extend %surface-card;
+    display: grid;
+    gap: space('5');
+    padding: space('5');
+
+    // Collapsed on phones unless opened; always visible from tablet up.
+    @include mq($until: md) {
+      &:not(.filter-bar__panel--open) {
+        display: none;
+      }
+    }
+
+    @include mq(lg) {
+      padding: space('6');
+    }
+  }
+
+  // Fields reflow by available width: stacked → 2 → 3 columns, no breakpoints.
+  &__fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: space('4');
+  }
+
+  &__field {
+    display: grid;
+    gap: space('1.5');
+  }
+
+  &__label {
+    @extend %eyebrow;
+    padding: 0;
+  }
+
+  &__control {
+    @extend %field;
+    appearance: none;
+
+    &--select {
+      padding-right: space('10');
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23113b53' stroke-width='1.8'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right space('4') center;
+      cursor: pointer;
+    }
+  }
+
+  &__sources {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: space('2');
+    margin-top: space('1.5');
+  }
+
+  &__clear {
+    justify-self: start;
+  }
+}

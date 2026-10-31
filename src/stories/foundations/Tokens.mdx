@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { ColorSwatches, RadiusAndShadow, SpacingScale, TypeScale } from './TokenGallery'
+
+<Meta title="Foundations/Design tokens" />
+
+# Design tokens
+
+Every value below is read **live from the CSS custom properties** that `src/styles/base/_root.scss`
+generates from the Sass maps in `src/styles/abstracts/_tokens.scss`. The page can't drift from the code.
+The values come from innoscripta.com's own `:root` variables. See `docs/DESIGN.md` for where each one comes from and the accessibility adjustments.
+
+## Brand palette
+
+Raw colours, named as on innoscripta.com. Components never use these directly.
+
+<ColorSwatches prefix="--palette-" />
+
+## Semantic colours
+
+The only colour tokens components may use (`color('text')`, `color('link')`, …).
+
+<ColorSwatches prefix="--color-" />
+
+## Gradients
+
+`brand` is innoscripta's signature blue→turquoise and is used for display text and accents.
+`action` is the same hue, deepened so white button labels pass WCAG AA (≥ 4.5:1).
+
+<ColorSwatches prefix="--gradient-" />
+
+## Typography
+
+Poppins, the typeface innoscripta uses, self-hosted through `@fontsource/poppins`. Styles marked _fluid_ scale with `clamp()` between 576px and 1280px viewports.
+
+<TypeScale />
+
+## Spacing
+
+A 4px grid. innoscripta's component tokens use 6, 8, 10, 12, 16 and 20px.
+
+<SpacingScale />
+
+## Radius and elevation
+
+<RadiusAndShadow />

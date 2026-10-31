@@ -1,0 +1,33 @@
+// Global stylesheet entry. Component styles live next to components in *.module.scss.
+//
+// Cascade layers make precedence explicit and independent of import order:
+// reset < base < utilities, and unlayered CSS-module rules beat all of them.
+@use 'sass:meta';
+
+@layer reset, base, utilities;
+
+@layer reset {
+  @include meta.load-css('base/reset');
+}
+
+@layer base {
+  @include meta.load-css('base/fonts');
+  @include meta.load-css('base/root');
+  @include meta.load-css('base/typography');
+}
+
+@layer utilities {
+  @include meta.load-css('base/utilities');
+}
+
+@media print {
+  header,
+  nav,
+  button {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+}

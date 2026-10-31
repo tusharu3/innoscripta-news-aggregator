@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    image: news-aggregator:latest
+    ports:
+      - '8080:8080'
+    # Keys are optional: sources without a key show a friendly "unavailable" notice, BBC needs none.
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped

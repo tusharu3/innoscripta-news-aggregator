@@ -1,0 +1,76 @@
+@use 'abstracts' as *;
+
+// Block: .token-gallery — Storybook-only documentation layout.
+.token-gallery {
+  &__swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: space('4');
+    margin-block: space('4') space('8');
+  }
+
+  &__swatch {
+    margin: 0;
+
+    figcaption {
+      display: grid;
+      gap: 2px;
+      margin-top: space('2');
+      @include type('caption');
+
+      span {
+        color: color('text-muted');
+        word-break: break-all;
+      }
+    }
+  }
+
+  &__chip,
+  &__shape {
+    height: 4.5rem;
+    border: 1px solid color('border');
+    border-radius: radius('md');
+  }
+
+  &__shape {
+    background: color('surface');
+  }
+
+  &__rows {
+    display: grid;
+    gap: space('3');
+    margin-block: space('4') space('8');
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 8rem 1fr 6rem;
+    align-items: center;
+    gap: space('4');
+    @include type('caption');
+  }
+
+  &__bar {
+    height: 0.75rem;
+    border-radius: radius('pill');
+    background: var(--gradient-brand);
+  }
+
+  &__type-row {
+    display: grid;
+    gap: space('1');
+    padding-bottom: space('3');
+    border-bottom: 1px solid color('border');
+
+    small {
+      color: color('text-muted');
+    }
+  }
+
+  // One modifier per type style, generated from the token map, so samples use the real mixin.
+  @each $style, $_ in $type-scale {
+    &__sample--#{$style} {
+      @include type($style);
+    }
+  }
+}

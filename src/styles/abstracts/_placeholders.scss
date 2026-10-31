@@ -1,0 +1,82 @@
+@use 'functions' as *;
+@use 'mixins' as *;
+
+// Placeholder selectors: shared rule sets that components inherit with @extend.
+// They emit no CSS unless extended, and extending groups selectors instead of
+// duplicating declarations.
+
+/// White card with innoscripta's hairline border and large radius.
+%surface-card {
+  background: color('surface');
+  border: 1px solid color('border');
+  border-radius: radius('xl');
+}
+
+/// Pill-shaped interactive base (chips, nav items, buttons).
+%pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: space('2');
+  border: 1px solid transparent;
+  border-radius: radius('pill');
+  cursor: pointer;
+  font: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+  transition-property: background, color, border-color, box-shadow, transform;
+  transition-duration: duration('fast');
+  -webkit-tap-highlight-color: transparent;
+  @include focus-ring;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+/// Small uppercase label above titles ("FOR CFOS, HEADS OF TAX…").
+%eyebrow {
+  @include type('eyebrow');
+  color: color('text-muted');
+}
+
+/// Text field base. 16px on phones so iOS Safari doesn't zoom on focus.
+%field {
+  width: 100%;
+  min-height: 2.75rem;
+  padding-inline: space('4');
+  border: 1px solid color('border-strong');
+  border-radius: radius('md');
+  background: color('surface');
+  color: color('text');
+  font: inherit;
+  font-size: 1rem;
+  transition:
+    border-color duration('fast'),
+    box-shadow duration('fast');
+
+  @include mq(md) {
+    font-size: 0.875rem;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: color('accent');
+    box-shadow: shadow('focus');
+  }
+
+  &::placeholder {
+    color: color('text-subtle');
+  }
+}
+
+/// Dashed empty / info panel.
+%empty-panel {
+  padding: space('10') space('6');
+  border: 1px dashed color('border-strong');
+  border-radius: radius('xl');
+  background: color('surface');
+  color: color('text-muted');
+  text-align: center;
+}

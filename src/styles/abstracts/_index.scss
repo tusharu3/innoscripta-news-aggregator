@@ -1,0 +1,7 @@
+// Public API of the design system for component modules:
+//   @use 'abstracts' as *;
+// Emits no CSS on its own: only variables, functions, mixins and placeholders.
+@forward 'tokens';
+@forward 'functions';
+@forward 'mixins';
+@forward 'placeholders';

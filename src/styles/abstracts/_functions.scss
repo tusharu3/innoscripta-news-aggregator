@@ -1,0 +1,65 @@
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:string';
+@use 'tokens' as *;
+
+// Token accessors. Each validates the key at build time (typos fail the build) and returns
+// the runtime CSS custom property, so values can still be overridden per media query.
+
+/// Safe map lookup: fails the build on a typo instead of emitting invalid CSS.
+@function get($map, $key, $map-name: 'token map') {
+  @if not map.has-key($map, $key) {
+    @error 'Unknown key `#{$key}` in #{$map-name}. Available: #{map.keys($map)}';
+  }
+  @return map.get($map, $key);
+}
+
+/// Runtime token references (CSS custom properties emitted by base/_root.scss).
+@function color($role) {
+  $_: get($semantic-colors, $role, '$semantic-colors');
+  @return var(--color-#{$role});
+}
+
+@function space($step) {
+  $_: get($spacing, $step, '$spacing');
+  // `1.5` → `1_5`: dots are not valid in custom property names.
+  @return var(--space-#{str-replace('#{$step}', '.', '_')});
+}
+
+@function radius($name) {
+  $_: get($radii, $name, '$radii');
+  @return var(--radius-#{$name});
+}
+
+@function shadow($name) {
+  $_: get($shadows, $name, '$shadows');
+  @return var(--shadow-#{$name});
+}
+
+@function z($layer) {
+  @return get($z-index, $layer, '$z-index');
+}
+
+@function duration($name) {
+  $_: get($durations, $name, '$durations');
+  @return var(--duration-#{$name});
+}
+
+/// Fluid value between two sizes across the `sm` → `xl` viewport range.
+/// clamp(min, intercept + slope·vw, max)
+@function fluid($min, $max, $from: map.get($breakpoints, 'sm'), $to: map.get($breakpoints, 'xl')) {
+  $from-rem: math.div($from, 1em) * 1rem;
+  $to-rem: math.div($to, 1em) * 1rem;
+  $slope: math.div($max - $min, $to-rem - $from-rem);
+  $intercept: $min - $slope * $from-rem;
+  @return clamp(#{$min}, #{$intercept} + #{$slope * 100vw}, #{$max});
+}
+
+@function str-replace($string, $search, $replace: '') {
+  $index: string.index($string, $search);
+  @if $index {
+    @return string.slice($string, 1, $index - 1) + $replace +
+      str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+  }
+  @return $string;
+}

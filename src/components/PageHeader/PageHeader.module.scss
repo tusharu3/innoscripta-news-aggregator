@@ -1,0 +1,42 @@
+@use 'abstracts' as *;
+
+// Block: .page-header — centred hero in the style of innoscripta.com.
+// PageFallback copies this block's outer spacing, so swapping them never shifts layout.
+.page-header {
+  display: grid;
+  justify-items: center;
+  gap: space('2');
+  margin-block: space('4') space('8');
+  text-align: center;
+
+  @include mq(lg) {
+    margin-block: space('8') space('10');
+  }
+
+  &__eyebrow {
+    @extend %eyebrow;
+  }
+
+  &__title {
+    @include type('hero');
+    max-width: 22ch;
+  }
+
+  &__highlight {
+    @include gradient-text('brand');
+  }
+
+  &__description {
+    @include type('lead');
+    max-width: 60ch;
+    color: color('text-muted');
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: space('3');
+    margin-top: space('3');
+  }
+}

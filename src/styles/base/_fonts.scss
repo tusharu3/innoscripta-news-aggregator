@@ -1,0 +1,12 @@
+// Metric-matched fallback for Poppins (same technique as next/font).
+// Until Poppins loads, text renders in Arial scaled to Poppins' proportions, so the swap
+// to the real font doesn't move any text: no layout shift (CLS) and no "flash of reflow".
+// Overrides = Poppins metrics (ascent 1050, descent 350, line gap 100 per 1000 em) ÷ size-adjust.
+@font-face {
+  font-family: 'Poppins Fallback';
+  src: local('Arial'), local('ArialMT'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 112.16%;
+  ascent-override: 93.62%;
+  descent-override: 31.21%;
+  line-gap-override: 8.92%;
+}

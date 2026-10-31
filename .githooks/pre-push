@@ -1,0 +1,8 @@
+#!/bin/sh
+# Runs before every `git push` (enabled by `npm install` via the "prepare" script).
+# Blocks the push if the security gate, types or tests fail. Bypass only consciously: git push --no-verify
+set -e
+echo "pre-push: security check, typecheck, tests…"
+npm run --silent security
+npm run --silent typecheck
+npm run --silent test -- --reporter=dot

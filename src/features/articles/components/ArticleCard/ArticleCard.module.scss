@@ -1,0 +1,161 @@
+@use 'abstracts' as *;
+
+// Block: .article-card
+// The card is a size container: its layout follows the space it gets in the grid, not the
+// viewport. Narrow → stacked; ≥ 34rem wide (single column on tablets) → media on the left.
+.article-card {
+  @extend %surface-card;
+  container: article-card / inline-size;
+  height: 100%;
+  overflow: hidden;
+  transition:
+    box-shadow duration('base') var(--easing-standard),
+    border-color duration('base'),
+    transform duration('base') var(--easing-standard);
+
+  @include hover {
+    border-color: color('accent-ring');
+    box-shadow: shadow('lg');
+
+    @include motion-safe {
+      transform: translateY(-2px);
+    }
+  }
+
+  // Keyboard focus on the title link highlights the whole card.
+  &:has(.article-card__link:focus-visible) {
+    border-color: color('accent');
+    box-shadow: shadow('focus');
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+
+    @include container(34rem, article-card) {
+      grid-template-rows: none;
+      grid-template-columns: minmax(12rem, 40%) 1fr;
+    }
+  }
+
+  &__media {
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: color('surface-sunken');
+
+    @include container(34rem, article-card) {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 12rem;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__placeholder {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: space('4');
+    background: var(--gradient-brand);
+    color: color('on-action');
+    @include type('heading');
+    text-align: center;
+    opacity: 0.85;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: space('2');
+    padding: space('5');
+  }
+
+  &__meta {
+    @extend %eyebrow;
+    color: color('link');
+    font-weight: 600;
+  }
+
+  &__time {
+    color: color('text-muted');
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  &__title {
+    @include type('card-title');
+
+    @include container(34rem, article-card) {
+      @include type('heading');
+    }
+  }
+
+  &__link {
+    color: inherit;
+    text-decoration: none;
+    outline: none; // focus is shown on the whole card via :has() above
+
+    @include hover {
+      color: color('link');
+      text-decoration: underline;
+    }
+
+    // Without :has() support, keep a visible ring on the link itself.
+    @supports not selector(:has(*)) {
+      @include focus-ring;
+    }
+  }
+
+  &__description {
+    @include type('small');
+    @include line-clamp(3);
+    color: color('text-muted');
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: space('3');
+    margin-top: auto;
+    padding-top: space('3');
+    border-top: 1px solid color('border');
+  }
+
+  &__author {
+    @include type('small');
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: color('text');
+  }
+
+  &__follow {
+    @extend %pill;
+    @include type('caption');
+    flex-shrink: 0;
+    min-height: 2rem;
+    padding-inline: space('3');
+    border-color: color('border-strong');
+    color: color('text');
+    font-weight: 600;
+
+    @include hover {
+      border-color: color('accent');
+    }
+
+    &[aria-pressed='true'] {
+      border-color: transparent;
+      background: color('accent-soft');
+      color: color('link');
+    }
+  }
+}

@@ -1,0 +1,69 @@
+# Rendered at container start by the nginx image (envsubst on /etc/nginx/templates/*.template).
+# Only ${GUARDIAN_API_KEY}, ${NYT_API_KEY} and ${NEWSAPI_API_KEY} are substituted; nginx's own $vars are left alone.
+# Mirrors the dev proxy in vite.config.ts: the browser calls /api/<source>/..., nginx attaches the key.
+
+# Rate limit for the API proxy, per client IP. The keys are ours, so the proxy must not become
+# a free relay that burns our quota (NewsAPI free tier: 100 requests/day).
+limit_req_zone $binary_remote_addr zone=api_per_ip:10m rate=5r/s;
+
+server {
+  listen 8080;
+  server_name _;
+  root /usr/share/nginx/html;
+  index index.html;
+
+  # Don't advertise the nginx version in headers or error pages.
+  server_tokens off;
+
+  gzip on;
+  gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+
+  proxy_ssl_server_name on;
+  # Upstream cookies are never passed back to the browser.
+  proxy_hide_header Set-Cookie;
+
+  # --- API proxy (read-only, rate-limited; shared rules in api-proxy.conf) -----
+
+  location /api/guardian/ {
+    include /etc/nginx/snippets/api-proxy.conf;
+    set $args $args&api-key=${GUARDIAN_API_KEY};
+    proxy_set_header Host content.guardianapis.com;
+    proxy_pass https://content.guardianapis.com/;
+  }
+
+  location /api/nyt/ {
+    include /etc/nginx/snippets/api-proxy.conf;
+    set $args $args&api-key=${NYT_API_KEY};
+    proxy_set_header Host api.nytimes.com;
+    proxy_pass https://api.nytimes.com/svc/;
+  }
+
+  location /api/newsapi/ {
+    include /etc/nginx/snippets/api-proxy.conf;
+    proxy_set_header Host newsapi.org;
+    proxy_set_header X-Api-Key "${NEWSAPI_API_KEY}";
+    proxy_pass https://newsapi.org/v2/;
+  }
+
+  location /api/bbc/ {
+    include /etc/nginx/snippets/api-proxy.conf;
+    proxy_set_header Host feeds.bbci.co.uk;
+    proxy_pass https://feeds.bbci.co.uk/;
+  }
+
+  # --- Static app --------------------------------------------------------------
+
+  # Hashed build assets can be cached forever.
+  location /assets/ {
+    include /etc/nginx/snippets/security-headers.conf;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    try_files $uri =404;
+  }
+
+  # SPA fallback so deep links like /search?q=... work on refresh. HTML is never cached.
+  location / {
+    include /etc/nginx/snippets/security-headers.conf;
+    add_header Cache-Control "no-cache";
+    try_files $uri /index.html;
+  }
+}

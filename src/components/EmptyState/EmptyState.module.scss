@@ -1,0 +1,14 @@
+@use 'abstracts' as *;
+
+// Block: .empty-state — dashed panel for "nothing to show" messages.
+.empty-state {
+  @extend %empty-panel;
+
+  a {
+    font-weight: 600;
+  }
+
+  > * + * {
+    margin-top: space('3');
+  }
+}

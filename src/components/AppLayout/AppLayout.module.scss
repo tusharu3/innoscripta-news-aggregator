@@ -1,0 +1,159 @@
+@use 'abstracts' as *;
+
+// =============================================================================
+// Block: .app-layout — page shell (skip link, header, main, footer)
+// =============================================================================
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  // Room for the fixed phone tab bar (--bottom-nav-height is 0 from tablet up, see base/_root.scss).
+  padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
+
+  &__skip-link {
+    position: absolute;
+    top: space('2');
+    left: space('2');
+    z-index: z('skip-link');
+    padding: space('2') space('4');
+    border-radius: radius('md');
+    background: color('surface');
+    box-shadow: shadow('md');
+    transform: translateY(-200%);
+
+    &:focus {
+      transform: none;
+    }
+  }
+
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: z('header');
+    border-bottom: 1px solid color('border');
+    background: color('surface');
+
+    // Frosted glass where supported; solid white otherwise.
+    @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+      background: rgb(255 255 255 / 0.85);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      backdrop-filter: saturate(180%) blur(12px);
+    }
+  }
+
+  &__header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: space('6');
+    height: var(--header-height);
+  }
+
+  &__brand {
+    @include type('heading');
+    color: color('text');
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    @include focus-ring(4px);
+  }
+
+  &__brand-dot {
+    @include gradient-text('brand');
+  }
+
+  &__main {
+    flex: 1;
+    padding-block: space('4') space('12');
+    // Programmatic focus after navigation shouldn't draw a ring around the whole page.
+    outline: none;
+  }
+
+  &__footer {
+    padding-block: space('6');
+    border-top: 1px solid color('border');
+    background: color('surface');
+    color: color('text-muted');
+    @include type('caption');
+    text-align: center;
+  }
+}
+
+// =============================================================================
+// Block: .site-nav — modifiers --top (tablet+) and --bottom (phone tab bar)
+// =============================================================================
+.site-nav {
+  &--top {
+    display: none;
+
+    @include mq(md) {
+      display: block;
+    }
+  }
+
+  &--bottom {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: z('bottom-nav');
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid color('border');
+    background: color('surface');
+
+    @include mq(md) {
+      display: none;
+    }
+  }
+
+  &__list {
+    &--top {
+      display: flex;
+      gap: space('1');
+    }
+
+    &--bottom {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      height: var(--bottom-nav-height);
+    }
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    color: color('text');
+    text-decoration: none;
+    @include focus-ring;
+
+    &--top {
+      @extend %pill;
+      @include type('small');
+      min-height: 2.5rem;
+      padding-inline: space('4');
+
+      @include hover {
+        background: color('surface-sunken');
+      }
+    }
+
+    &--bottom {
+      flex-direction: column;
+      justify-content: center;
+      gap: space('1');
+      height: 100%;
+      @include type('caption');
+      color: color('text-muted');
+    }
+
+    &--active {
+      color: color('link');
+      font-weight: 600;
+    }
+
+    &--top#{&}--active {
+      background: color('accent-soft');
+    }
+
+    &--bottom#{&}--active svg {
+      stroke-width: 2.2;
+    }
+  }
+}

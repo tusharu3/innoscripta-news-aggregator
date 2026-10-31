@@ -1,0 +1,44 @@
+@use 'abstracts' as *;
+
+// Block: .article-results
+.article-results {
+  transition: opacity duration('base');
+
+  // Previous results stay visible (dimmed) while new filters load — no skeleton flash.
+  &[aria-busy='true'] {
+    opacity: 0.55;
+  }
+
+  // Intrinsic grid: 1 column on phones → 2 → 3 → 4–5 on large screens with no breakpoints.
+  // min() keeps it from overflowing on 320px phones.
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: fluid(1rem, 1.5rem);
+    padding: 0;
+    list-style: none;
+  }
+
+  // Native "virtualisation": the browser skips layout and paint for off-screen cards until they
+  // approach the viewport. `auto 26rem` reserves an estimated height and then remembers the real
+  // one, so the scrollbar stays stable. Cheaper than a JS virtual list at this list size.
+  &__item {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 26rem;
+  }
+
+  &__more {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: space('10');
+  }
+
+  // Zero-size marker observed by useInfiniteScroll; rootMargin triggers loading well before it is visible.
+  &__sentinel {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 1px;
+  }
+}

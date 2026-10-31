@@ -1,0 +1,64 @@
+// Minimal modern reset.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  // Focused or anchored elements are never hidden under the sticky header or the phone tab bar
+  // (WCAG 2.4.11 Focus Not Obscured).
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+  scroll-padding-bottom: calc(var(--bottom-nav-height) + 1rem);
+  // Reserve the scrollbar's space up front, so content doesn't jump sideways when a page
+  // becomes scrollable after data loads (CLS).
+  scrollbar-gutter: stable;
+  color-scheme: light;
+}
+
+body {
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+p,
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+}

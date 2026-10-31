@@ -1,0 +1,60 @@
+@use 'sass:map';
+@use '../abstracts' as *;
+
+// Compiles the Sass token maps into CSS custom properties. Runtime theming
+// (and Storybook's token docs) read these `--*` variables.
+:root {
+  @each $name, $value in $palette {
+    --palette-#{$name}: #{$value};
+  }
+  @each $role, $value in $semantic-colors {
+    --color-#{$role}: #{$value};
+  }
+  @each $name, $value in $gradients {
+    --gradient-#{$name}: #{$value};
+  }
+  @each $step, $value in $spacing {
+    --space-#{str-replace('#{$step}', '.', '_')}: #{$value};
+  }
+  @each $name, $value in $radii {
+    --radius-#{$name}: #{$value};
+  }
+  @each $name, $value in $shadows {
+    --shadow-#{$name}: #{$value};
+  }
+  @each $name, $value in $durations {
+    --duration-#{$name}: #{$value};
+  }
+
+  --font-family-base: #{$font-family-base};
+  --easing-standard: #{$easing-standard};
+
+  // Layout: fluid side gutter and container width.
+  --gutter: #{fluid(1rem, 2.5rem)};
+  --container-max: #{map.get($container-max, 'base')};
+  --header-height: 4rem;
+  --bottom-nav-height: 0px;
+
+  @include mq(xxl) {
+    --container-max: #{map.get($container-max, 'xxl')};
+  }
+
+  // Phones get the bottom tab bar instead of the top nav (see Layout.module.scss).
+  @include mq($until: md) {
+    --header-height: 3.5rem;
+    --bottom-nav-height: 4rem;
+  }
+
+  // Users who ask for more contrast get solid navy instead of translucent greys.
+  @media (prefers-contrast: more) {
+    --color-text-muted: #{map.get($palette, 'navy')};
+    --color-text-subtle: #{map.get($palette, 'navy')};
+    --color-border: #{map.get($palette, 'grey-600')};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    @each $name, $value in $durations {
+      --duration-#{$name}: 0ms;
+    }
+  }
+}

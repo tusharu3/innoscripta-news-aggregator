@@ -1,0 +1,31 @@
+@use 'abstracts' as *;
+
+// Block: .chip-toggle — state comes from [aria-pressed], one source of truth for a11y and styling.
+.chip-toggle {
+  @extend %pill;
+  @include type('small');
+  min-height: 2.5rem; // ≥ 24px target size (WCAG 2.5.8); 40px for comfortable touch
+  padding-inline: space('4');
+  border-color: color('border-strong');
+  background: color('surface');
+  color: color('text');
+  font-weight: 500;
+
+  @include hover {
+    border-color: color('accent');
+  }
+
+  &[aria-pressed='true'] {
+    border-color: color('accent');
+    background: color('accent-soft');
+    color: color('link');
+  }
+
+  &__check {
+    display: none;
+  }
+
+  &[aria-pressed='true'] &__check {
+    display: block;
+  }
+}

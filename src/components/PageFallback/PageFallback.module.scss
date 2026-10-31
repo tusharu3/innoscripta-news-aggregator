@@ -1,0 +1,35 @@
+@use 'abstracts' as *;
+
+// Same outer spacing as .page-header so the real header replaces it without shifting content.
+.page-fallback {
+  display: grid;
+  justify-items: center;
+  gap: space('3');
+  margin-block: space('4') space('8');
+
+  @include mq(lg) {
+    margin-block: space('8') space('10');
+  }
+
+  &__eyebrow,
+  &__title,
+  &__lead {
+    @include skeleton-block;
+    border-radius: radius('pill');
+  }
+
+  &__eyebrow {
+    width: 10rem;
+    height: 0.75rem;
+  }
+
+  &__title {
+    width: min(100%, 28rem);
+    height: fluid(2.25rem, 3.5rem);
+  }
+
+  &__lead {
+    width: min(100%, 36rem);
+    height: 1.25rem;
+  }
+}

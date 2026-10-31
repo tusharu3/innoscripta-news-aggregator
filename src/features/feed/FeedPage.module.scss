@@ -1,0 +1,25 @@
+@use 'abstracts' as *;
+
+// Block: .feed-page
+.feed-page {
+  &__tip {
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto space('8');
+    padding: space('2') space('5');
+    border-radius: radius('pill');
+    background: color('accent-soft');
+    color: color('text');
+    @include type('small');
+    text-align: center;
+
+    a {
+      font-weight: 600;
+    }
+
+    // On narrow phones a wrapping pill looks broken; use a rounded box instead.
+    @include mq($until: sm) {
+      border-radius: radius('md');
+    }
+  }
+}
