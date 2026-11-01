@@ -1,6 +1,6 @@
 @use 'abstracts' as *;
 
-// Block: .page-header — centred hero in the style of innoscripta.com.
+// Block: .page-header — centred hero.
 // PageFallback copies this block's outer spacing, so swapping them never shifts layout.
 .page-header {
   display: grid;

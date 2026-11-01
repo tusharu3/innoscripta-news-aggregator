@@ -18,7 +18,7 @@ interface ArticleResultsProps {
   /** Overrides `result.articles`, e.g. after re-ranking. */
   articles?: Article[]
   /** Visually hidden <h2> that names the list (keeps the h1 → h2 → h3 outline intact). */
-  heading?: string
+  heading: string
   empty: ReactNode
 }
 
@@ -30,12 +30,7 @@ interface ArticleResultsProps {
  * as the user nears the end; after that (or without IntersectionObserver) the "Load more" button
  * is the way forward, so keyboard users and the footer are never trapped behind endless loading.
  */
-export function ArticleResults({
-  result,
-  articles = result.articles,
-  heading = 'Articles',
-  empty,
-}: ArticleResultsProps) {
+export function ArticleResults({ result, articles = result.articles, heading, empty }: ArticleResultsProps) {
   const headingId = useId()
   const loadedPages = result.data?.pages.length ?? 0
   const sentinelRef = useInfiniteScroll<HTMLDivElement>({

@@ -26,3 +26,6 @@ dist-ssr
 
 *storybook.log
 storybook-static
+
+# Personal editor run configs
+.claude/launch.json

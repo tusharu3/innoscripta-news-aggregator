@@ -39,7 +39,10 @@ export const LongTitle: Story = {
 /** Long byline: the author truncates with an ellipsis and the follow button stays fully visible. */
 export const LongAuthor: Story = {
   args: {
-    article: { ...sampleArticles[0], author: 'James Wallace (now) & Tanya Aldred (earlier) with additional reporting' },
+    article: {
+      ...sampleArticles[0],
+      author: 'James Wallace (now) & Tanya Aldred (earlier) with additional reporting',
+    },
   },
 }
 

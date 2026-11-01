@@ -26,6 +26,14 @@ describe('preferences store', () => {
     expect(state().authors).toEqual([])
   })
 
+  it('follows an author only once and never unfollows', () => {
+    state().followAuthor(' Jane Doe ')
+    state().followAuthor('JANE DOE')
+    expect(state().authors).toEqual(['Jane Doe'])
+    state().followAuthor('  ')
+    expect(state().authors).toEqual(['Jane Doe'])
+  })
+
   it('persists to localStorage', () => {
     state().toggleCategory('health')
     expect(localStorage.getItem(PREFERENCES_STORAGE_KEY)).toContain('health')

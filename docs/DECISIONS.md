@@ -50,10 +50,10 @@ Short records of choices that someone might reasonably question.
 **Decision.** Use the current Vite React-TS template defaults (oxlint, TypeScript native compiler) and Vitest sharing Vite's config.
 **Consequences.** Fast feedback (the full test suite runs in about 3 s) and minimal config files.
 
-## ADR-009: innoscripta design language with SCSS Modules (replaces Tailwind)
+## ADR-009: Token-based design language with SCSS Modules (replaces Tailwind)
 
-**Context.** The UI should feel like an innoscripta product. The styling should show a real design system: tokens, partials, inheritance, conditional logic, and modern CSS (`@layer`, `@container`, `@supports`).
-**Decision.** Take the tokens from innoscripta.com's own `:root` variables into Sass maps, compile them to CSS custom properties, and style components with CSS Modules that consume them only through token functions and mixins. Remove Tailwind.
+**Context.** The UI should feel like a polished, consistent product. The styling should show a real design system: tokens, partials, inheritance, conditional logic, and modern CSS (`@layer`, `@container`, `@supports`).
+**Decision.** Define the design tokens as Sass maps, compile them to CSS custom properties, and style components with CSS Modules that consume them only through token functions and mixins. Remove Tailwind.
 **Consequences.** One source of truth for the brand, readable scoped CSS, and build-time errors on unknown tokens. Three brand colours were adjusted for WCAG AA (documented in DESIGN.md §4). There are more files than with utility classes, which is accepted for clarity.
 
 ## ADR-010: Storybook as the component and design-system workbench

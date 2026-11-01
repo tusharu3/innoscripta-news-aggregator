@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/PageHeader/PageHeader'
 import { APP_NAME } from '@/config/constants'
 import { CATEGORIES } from '@/domain/article'
 import { CATEGORY_LABELS } from '@/domain/labels'
-import { isFollowing, usePreferences } from '@/features/preferences/preferencesStore'
+import { usePreferences } from '@/features/preferences/preferencesStore'
 import { bem } from '@/lib/bem'
 import styles from './PreferencesPage.module.scss'
 
@@ -36,10 +36,7 @@ export function PreferencesPage() {
 
   const addAuthor = (event: FormEvent) => {
     event.preventDefault()
-    // toggleAuthor would unfollow an existing author, so only call it for new names.
-    if (authorDraft.trim() && !isFollowing(preferences.authors, authorDraft)) {
-      preferences.toggleAuthor(authorDraft)
-    }
+    preferences.followAuthor(authorDraft)
     setAuthorDraft('')
   }
 

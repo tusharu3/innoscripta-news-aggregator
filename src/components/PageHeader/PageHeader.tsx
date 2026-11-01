@@ -7,7 +7,7 @@ const b = bem(styles, 'page-header')
 interface PageHeaderProps {
   eyebrow: string
   title: string
-  /** Rendered after `title` in the brand gradient, like the innoscripta hero. */
+  /** Rendered after `title` in the brand gradient, like a landing-page hero. */
   highlight?: string
   description?: ReactNode
   actions?: ReactNode

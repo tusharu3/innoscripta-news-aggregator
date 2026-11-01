@@ -23,6 +23,9 @@ export const AUTO_LOAD_PAGE_LIMIT = 3
 /** Start fetching the next page when the end of the list is this far below the viewport. */
 export const INFINITE_SCROLL_ROOT_MARGIN = '800px'
 
+/** Placeholder cards shown on first load: enough to fill the first screen on any layout. */
+export const SKELETON_CARD_COUNT = 6
+
 /** The first row of cards loads images eagerly with high priority (helps LCP); the rest lazy-load. */
 export const EAGER_IMAGE_COUNT = 3
 

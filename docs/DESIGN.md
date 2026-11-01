@@ -1,42 +1,38 @@
 # Design document
 
 How Newsroom looks, why it looks that way, and how the styling is built.
-The visual language follows **innoscripta.com**, so the take-home feels like part of the same product family.
 
 > Living reference: run `npm run storybook` and open **Foundations → Design tokens**. That page reads the real CSS variables, so it can't fall out of date.
 
 ---
 
-## 1. Source of truth
+## 1. Tokens at a glance
 
-The tokens were taken from innoscripta.com itself (inspected on 31 Oct 2026) rather than eyeballed from screenshots. The site exposes its design system as `:root` custom properties.
+All values live in [`_tokens.scss`](../src/styles/abstracts/_tokens.scss). Components read them only through token functions and mixins.
 
-| What we observed on innoscripta.com | Value                                                | Our token                                  |
-| ----------------------------------- | ---------------------------------------------------- | ------------------------------------------ |
-| Typeface (all text)                 | Poppins 400 / 500 / 600 / 700                        | `$font-family-base`                        |
-| Headline colour (`h1`, `h2`)        | `rgb(17 59 83)` = `#113b53`                          | `color('text')`                            |
-| Body copy                           | navy at 80% opacity                                  | `color('text-muted')`                      |
-| Theme colour                        | `--theme-color: #2186ab`                             | `color('accent')`                          |
-| Theme dark                          | `--theme-color-dark: #115d78`                        | `color('link')`                            |
-| Hero highlight and CTA gradient     | `linear-gradient(87.45deg, #2b98c4, #38a09d)`        | `--gradient-brand`                         |
-| Section background                  | `--section-grey-bg: rgb(248 249 250)`                | `color('canvas')`                          |
-| Hairline borders (nav cards)        | `1px solid #ededed`                                  | `color('border')`                          |
-| Pill input outline (hero form)      | `1px solid #b9d3dd`, radius 999px                    | `color('border-strong')`, `radius('pill')` |
-| Large radius                        | `--modals-modal-border-radius: 20px`                 | `radius('xl')`                             |
-| Control radii                       | `--general-size34/48-borderradius: 6px / 8px`        | `radius('sm')`, `radius('md')`             |
-| Hero title                          | `--font-hero-title-48: 600 3rem/3.75rem`             | type style `hero`                          |
-| Section title                       | `--font-header-38: 600 2.375rem`                     | — (not used yet)                           |
-| Eyebrow (“FOR CFOS, HEADS OF TAX…”) | 12.25px, uppercase, navy 80%                         | type style `eyebrow`                       |
-| CTA label (“BOOK A CALL”)           | 12–14px, 600, uppercase, letter-spacing ≈ 0.035em    | type style `button`                        |
-| Shadow                              | `--toastify-toast-shadow: 0 4px 12px rgba(0,0,0,.1)` | `shadow('md')`                             |
-| Focus outline                       | `--general-outline-width: 3px` + `--theme-color-30`  | `focus-ring` mixin                         |
-| Layering                            | `--z-dropdown: 125`, `--z-modal: 200`                | `$z-index`                                 |
-
-**Deliberately not copied:** the innoscripta logo, product names and imagery. The app keeps its own “Newsroom.” wordmark and borrows only the typography, colour and shape language.
+| Role                         | Value                                         | Token                                      |
+| ---------------------------- | --------------------------------------------- | ------------------------------------------ |
+| Typeface (all text)          | Poppins 400 / 500 / 600 / 700                 | `$font-family-base`                        |
+| Headings and body text       | navy `#113b53`                                | `color('text')`                            |
+| Secondary text               | navy at 80% opacity                           | `color('text-muted')`                      |
+| Accent (borders, large text) | `#2186ab`                                     | `color('accent')`                          |
+| Links and small accent text  | `#115d78`                                     | `color('link')`                            |
+| Headline highlight gradient  | `linear-gradient(87.45deg, #2b98c4, #38a09d)` | `--gradient-brand`                         |
+| Page background              | `#f8f9fa`                                     | `color('canvas')`                          |
+| Hairline borders             | `1px solid #ededed`                           | `color('border')`                          |
+| Pill input outline           | `1px solid #b9d3dd`, radius 999px             | `color('border-strong')`, `radius('pill')` |
+| Card radius                  | 20px                                          | `radius('xl')`                             |
+| Control radii                | 6px / 8px                                     | `radius('sm')`, `radius('md')`             |
+| Page title                   | 600, 30 → 48px fluid                          | type style `hero`                          |
+| Eyebrow                      | 12.25px, uppercase, +0.08em                   | type style `eyebrow`                       |
+| Button label                 | 14px, 600, uppercase, +0.035em                | type style `button`                        |
+| Elevation                    | `0 4px 12px rgba(0,0,0,.1)`                   | `shadow('md')`                             |
+| Focus outline                | 3px ring, accent at 30%                       | `focus-ring` mixin                         |
+| Layering                     | header 100, bottom nav 110, skip link 200     | `$z-index`                                 |
 
 ## 2. Design principles
 
-1. **Calm, editorial, trustworthy.** Mostly navy on white with generous whitespace, and colour reserved for meaning. This matches innoscripta's “audit-proof” tone.
+1. **Calm, editorial, trustworthy.** Mostly navy on white with generous whitespace, and colour reserved for meaning.
 2. **One signature move.** The blue→turquoise gradient appears only on headline highlights, the wordmark dot and primary actions, which keeps it special.
 3. **Content first.** Cards are quiet (hairline border, no shadow) until hovered, so images and headlines carry the page.
 4. **Accessible by default.** Every colour pairing meets WCAG 2.2 AA. Where the brand palette didn't, we adjusted it (see §4).
@@ -64,7 +60,7 @@ _Fluid_ styles use `clamp()` generated by the Sass `fluid()` function, scaling l
 
 Components use **semantic** tokens (`color('text')`, `color('link')`…), never raw palette values. That keeps the brand-to-role mapping in one file.
 
-| Pairing                                    | innoscripta original     | Contrast                   | Our decision                                                                           |
+| Pairing                                    | Brand value              | Contrast                   | Our decision                                                                           |
 | ------------------------------------------ | ------------------------ | -------------------------- | -------------------------------------------------------------------------------------- |
 | White label on CTA gradient                | `#2b98c4 → #38a09d`      | 3.3 / **3.1:1** ✗          | **`action` gradient `#1c7393 → #277f7f`**: same hue and angle, **5.4 / 4.7:1** ✓       |
 | Small accent text (links, publisher label) | `#2186ab`                | **4.1:1** ✗                | Use theme-dark **`#115d78` (7.3:1)** ✓. `#2186ab` stays for borders and large accents. |
@@ -97,9 +93,9 @@ Verified in the browser at **320, 375, 620, 700, 1440 and 2560px**, with no hori
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Button**              | Pill, uppercase label. `primary` (action gradient), `secondary` (white with blue-grey outline), `ghost` (link colour). Sizes `md` (44px) and `sm` (36px). Disabled at 60% opacity. `ButtonLink` shares the styles.                                              |
 | **ChipToggle**          | Pill toggle. Its state comes from `aria-pressed`, which drives both a11y and styling (check icon, accent-soft fill).                                                                                                                                            |
-| **PageHeader**          | Eyebrow, H1 with gradient highlight, lead, optional actions. Centred, like the innoscripta hero.                                                                                                                                                                |
+| **PageHeader**          | Eyebrow, H1 with gradient highlight, lead, optional actions. Centred, like a landing-page hero.                                                                                                                                                                 |
 | **ArticleCard**         | Media (16:9, or a gradient placeholder with the publisher name), eyebrow meta (publisher · relative time), title link, 3-line clamped description, byline + Follow pill. It lifts on hover. Keyboard focus on the title highlights the whole card via `:has()`. |
-| **FilterBar**           | Pill search field (mirrors the innoscripta hero form) plus a card with category, date fields and source chips. Collapsible on phones.                                                                                                                           |
+| **FilterBar**           | Pill search field plus a card with category, date fields and source chips. Collapsible on phones.                                                                                                                                                               |
 | **Notice / EmptyState** | Partial-failure notice (orange rule) and a dashed empty panel.                                                                                                                                                                                                  |
 | **Skeleton**            | Card-shaped shimmer, which becomes static blocks under `prefers-reduced-motion`.                                                                                                                                                                                |
 
@@ -169,8 +165,8 @@ Every story runs inside the real app providers with fake `NewsSource`s, so there
 | Decision                         | Trade-off                                                                                                                                                                                       |
 | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | SCSS Modules instead of Tailwind | More files, but the brief and the brand call for a real token system, inheritance and conditional logic. Class names are scoped and readable, and the CSS bundle is about 23 kB (5 kB gzipped). |
-| Darkened action gradient         | Slightly deeper than innoscripta's marketing CTA, in exchange for AA-compliant labels.                                                                                                          |
-| No dark mode                     | innoscripta.com is light-only. The token layer is ready for it: a `[data-theme='dark']` block overriding `--color-*` would be enough.                                                           |
+| Darkened action gradient         | Slightly deeper than the brand gradient, in exchange for AA-compliant labels.                                                                                                                   |
+| No dark mode                     | Out of scope for now. The token layer is ready for it: a `[data-theme='dark']` block overriding `--color-*` would be enough.                                                                    |
 | Picsum images in Storybook       | External placeholder service. It's for documentation only and never used by the app.                                                                                                            |
 
 Next: visual regression tests on the Storybook stories (Chromatic or Playwright screenshots), and a dark theme behind `prefers-color-scheme`.

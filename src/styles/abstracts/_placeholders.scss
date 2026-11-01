@@ -5,7 +5,7 @@
 // They emit no CSS unless extended, and extending groups selectors instead of
 // duplicating declarations.
 
-/// White card with innoscripta's hairline border and large radius.
+/// White card with a hairline border and large radius.
 %surface-card {
   background: color('surface');
   border: 1px solid color('border');
@@ -35,7 +35,7 @@
   }
 }
 
-/// Small uppercase label above titles ("FOR CFOS, HEADS OF TAX…").
+/// Small uppercase label above titles.
 %eyebrow {
   @include type('eyebrow');
   color: color('text-muted');

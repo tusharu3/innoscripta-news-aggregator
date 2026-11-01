@@ -1,7 +1,7 @@
 @use 'abstracts' as *;
 
-// Block: .source-notice — navy text on orange-10 (10.8:1) with an orange rule; the orange
-// text innoscripta uses would only reach 3.6:1 (see docs/DESIGN.md §4).
+// Block: .source-notice — navy text on orange-10 (10.8:1) with an orange rule; orange
+// text on that background would only reach 3.6:1 (see docs/DESIGN.md §4).
 .source-notice {
   margin-bottom: space('6');
   padding: space('4') space('5');

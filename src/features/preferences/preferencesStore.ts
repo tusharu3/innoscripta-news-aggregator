@@ -19,6 +19,8 @@ interface PreferencesState extends Preferences {
   toggleCategory(category: Category): void
   /** Follows the author if not followed yet, otherwise unfollows. Case-insensitive. */
   toggleAuthor(name: string): void
+  /** Follows the author; a no-op if already followed. Case-insensitive. */
+  followAuthor(name: string): void
   reset(): void
 }
 
@@ -28,10 +30,14 @@ export const DEFAULT_PREFERENCES: Preferences = {
   authors: [],
 }
 
-/** Case- and whitespace-insensitive check, so "jane doe " and "Jane Doe" are the same author. */
+/** Case- and whitespace-insensitive, so "jane doe " and "Jane Doe" are the same author. */
+function sameAuthor(a: string, b: string): boolean {
+  return a.trim().toLowerCase() === b.trim().toLowerCase()
+}
+
+/** True when `name` is already in the followed list. */
 export function isFollowing(authors: readonly string[], name: string): boolean {
-  const needle = name.trim().toLowerCase()
-  return authors.some((a) => a.toLowerCase() === needle)
+  return authors.some((a) => sameAuthor(a, name))
 }
 
 export const usePreferences = create<PreferencesState>()(
@@ -45,8 +51,13 @@ export const usePreferences = create<PreferencesState>()(
           const trimmed = name.trim()
           if (!trimmed) return s
           return isFollowing(s.authors, trimmed)
-            ? { authors: s.authors.filter((a) => a.toLowerCase() !== trimmed.toLowerCase()) }
+            ? { authors: s.authors.filter((a) => !sameAuthor(a, trimmed)) }
             : { authors: [...s.authors, trimmed] }
+        }),
+      followAuthor: (name) =>
+        set((s) => {
+          const trimmed = name.trim()
+          return !trimmed || isFollowing(s.authors, trimmed) ? s : { authors: [...s.authors, trimmed] }
         }),
       reset: () => set(DEFAULT_PREFERENCES),
     }),

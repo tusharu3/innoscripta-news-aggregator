@@ -80,7 +80,7 @@
   }
 }
 
-/// innoscripta's signature gradient headline text, with a solid fallback.
+/// Brand-gradient headline text, with a solid fallback.
 @mixin gradient-text($gradient: 'brand') {
   color: color('accent');
 

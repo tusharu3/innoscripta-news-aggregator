@@ -1,9 +1,9 @@
 # Newsroom — News Aggregator
 
-A news aggregator built with **React 19 + TypeScript** for the innoscripta Frontend take-home challenge.
-It searches and combines articles from **The Guardian, The New York Times, NewsAPI and BBC News** in one clean, responsive interface styled after innoscripta.com.
+A news aggregator built with **React 19 + TypeScript** as a frontend take-home challenge.
+It searches and combines articles from **The Guardian, The New York Times, NewsAPI and BBC News** in one clean, responsive interface.
 
-![React](https://img.shields.io/badge/React-19-61dafb) ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6) ![Tests](https://img.shields.io/badge/tests-77%20passing-2a8484) ![Docker](https://img.shields.io/badge/Docker-ready-2496ed)
+![React](https://img.shields.io/badge/React-19-61dafb) ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6) ![Docker](https://img.shields.io/badge/Docker-ready-2496ed)
 
 ## What it does
 
@@ -72,7 +72,7 @@ Open **<http://localhost:6006>**
 
 | Command                            | What it does                                                                           |
 | ---------------------------------- | -------------------------------------------------------------------------------------- |
-| `npm test`                         | 77 unit and integration tests (Vitest + Testing Library)                               |
+| `npm test`                         | Unit and integration tests (Vitest + Testing Library)                                  |
 | `npm run verify`                   | Typecheck, lint, test and production build (what CI runs)                              |
 | `npm run security`                 | Dependency audit, secret scan and unsafe-code scan (also runs before every `git push`) |
 | `npm run build && npm run preview` | Production build locally. Add `?vitals` to the URL to log Core Web Vitals.             |
@@ -83,7 +83,7 @@ Open **<http://localhost:6006>**
 - **Data:** TanStack Query infinite queries (cache, dedupe, cancellation), **infinite scroll** with an accessible "Load more" fallback, debounced search, and URL-driven filters.
 - **Performance:** lazy routes with hover preloading, `content-visibility` virtualisation, a font preload and a metric-matched fallback font. Measured locally: **LCP 724 ms · INP 40 ms · CLS 0**.
 - **Accessibility:** WCAG 2.2 AA, semantic HTML, focus management on navigation, per-page titles and AA-checked colours.
-- **Styling:** SCSS design system using innoscripta's tokens. BEM in CSS Modules. Uses `@layer`, container queries, `clamp()` and `@supports`.
+- **Styling:** SCSS design system built on design tokens. BEM in CSS Modules. Uses `@layer`, container queries, `clamp()` and `@supports`.
 - **Security:** CSP and security headers, a GET-only rate-limited proxy, URL sanitisation against XSS, a non-root container, and an audit gate. See [SECURITY.md](SECURITY.md).
 - **Quality gates:** strict TypeScript, oxlint, Prettier, a pre-push hook, and GitHub Actions CI (including a Docker smoke test) plus Dependabot.
 
@@ -104,14 +104,14 @@ docs/           Detailed documentation (below)
 
 ## Documentation
 
-| Doc                                                                                                        | Read it for                                                                                      |
-| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [DOCKER.md](docs/DOCKER.md)                                                                                | Beginner's Docker guide: how the image works, how to run it, and a 9-step verification checklist |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md)                                                                    | **Start here.** An index of every feature and technique, with where it lives and why             |
-| [DESIGN.md](docs/DESIGN.md)                                                                                | innoscripta design tokens, accessibility trade-offs, CSS architecture                            |
-| [DATA_FLOW.md](docs/DATA_FLOW.md)                                                                          | From keystroke to rendered cards. Where each piece of state lives.                               |
-| [DECISIONS.md](docs/DECISIONS.md)                                                                          | 15 short ADRs (for example why there's no Redux, and why infinite scroll has a button)           |
-| [TESTING.md](docs/TESTING.md) · [CODE_GUIDELINES.md](docs/CODE_GUIDELINES.md) · [SECURITY.md](SECURITY.md) | Test strategy, conventions, threat model                                                         |
+| Doc                                                                                                        | Read it for                                                                            |
+| ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [DOCKER.md](docs/DOCKER.md)                                                                                | How the Docker image works, how to run it, and a verification checklist                |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md)                                                                    | **Start here.** An index of every feature and technique, with where it lives and why   |
+| [DESIGN.md](docs/DESIGN.md)                                                                                | Design tokens, accessibility trade-offs, CSS architecture                              |
+| [DATA_FLOW.md](docs/DATA_FLOW.md)                                                                          | From keystroke to rendered cards. Where each piece of state lives.                     |
+| [DECISIONS.md](docs/DECISIONS.md)                                                                          | 15 short ADRs (for example why there's no Redux, and why infinite scroll has a button) |
+| [TESTING.md](docs/TESTING.md) · [CODE_GUIDELINES.md](docs/CODE_GUIDELINES.md) · [SECURITY.md](SECURITY.md) | Test strategy, conventions, threat model                                               |
 
 ## AI-assisted workflow
 

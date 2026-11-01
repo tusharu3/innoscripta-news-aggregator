@@ -19,7 +19,7 @@ function buttonClassName({ variant = 'primary', size = 'md' }: ButtonStyleProps,
   return cx(b(null, { [variant]: true, sm: size === 'sm' }), className)
 }
 
-/** Pill button in innoscripta style. Defaults to `type="button"` so it never submits a form by accident. */
+/** Pill button. Defaults to `type="button"` so it never submits a form by accident. */
 export function Button({
   variant,
   size,

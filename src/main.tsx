@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from '@/app/App'
-// Poppins (innoscripta's typeface), self-hosted: no third-party font request, works offline in Docker.
+// Poppins, self-hosted: no third-party font request, works offline in Docker.
 // Only the latin subset and the four weights in use are bundled.
 import '@fontsource/poppins/latin-400.css'
 import '@fontsource/poppins/latin-500.css'
