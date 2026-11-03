@@ -155,7 +155,7 @@ src/**/X.module.scss    Component styles: CSS Modules + BEM (`.article-card__tit
 
 - **Foundations / Design tokens:** live colour, gradient, type, spacing, radius and shadow galleries
 - **Components:** Button, ChipToggle, PageHeader, EmptyState (with controls)
-- **Features:** ArticleCard (image, no image, no author, long title, wide container), FilterBar (interactive, active filters, phone)
+- **Features:** ArticleCard (image, no image, no author, long title, long author, wide container), FilterBar (interactive, active filters, phone)
 - **Pages:** full app screens on fake sources: Feed, Search, Preferences, **Partial failure**, **Loading**, **No results**, phone and large-display variants
 
 Every story runs inside the real app providers with fake `NewsSource`s, so there is no network access and no keys are needed. Toolbar viewports match the breakpoints. The **a11y addon** runs axe on every story.

@@ -13,6 +13,7 @@ Found a vulnerability? Please open a private security advisory on GitHub rather 
 | Script injection (defence in depth)         | Strict Content-Security-Policy: `script-src 'self'`, no inline or eval, `object-src 'none'`, `frame-ancestors 'none'`                                                   | `docker/security-headers.conf`                                         |
 | Clickjacking, MIME sniffing, referrer leaks | `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`, `COOP`                                                             | `docker/security-headers.conf`                                         |
 | Proxy abuse (burning our API quota)         | GET-only, per-IP rate limit (5 r/s, burst 20, then 429), visitor cookies and auth stripped, fixed upstream hosts (no SSRF)                                              | `docker/api-proxy.conf`                                                |
+| Keys sent to a spoofed upstream             | `proxy_ssl_verify on` against the image's CA bundle, with SNI, so the proxy only talks to the real provider hosts                                                       | `docker/nginx.conf.template`                                           |
 | Reverse tabnabbing                          | `rel="noopener noreferrer"` on every external link (enforced by the scanner)                                                                                            | `ArticleCard.tsx`, `scripts/security-check.mjs`                        |
 | Vulnerable dependencies                     | `npm audit` gate (prod: zero tolerance; dev: no high/critical), Dependabot weekly, targeted `overrides` instead of forced downgrades                                    | `scripts/security-check.mjs`, `.github/dependabot.yml`, `package.json` |
 | Supply-chain install scripts                | `npm ci --ignore-scripts` in the Docker build                                                                                                                           | `Dockerfile`                                                           |
@@ -35,5 +36,4 @@ For a deeper manual review (threats a regex can't see), use the `security-audito
 ## Known limitations
 
 - HSTS and TLS belong on the HTTPS proxy or CDN in front of the container. The container itself serves plain HTTP.
-- Upstream TLS certificate verification (`proxy_ssl_verify`) is not enabled yet, because the CA bundle path in the image hasn't been verified.
 - Anyone who can reach the app can use its API proxy within the rate limit. That's inherent to a public client-side app using server-held keys. Add authentication or a stricter quota if the app becomes public.

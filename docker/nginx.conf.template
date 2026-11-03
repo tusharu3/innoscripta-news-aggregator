@@ -19,6 +19,11 @@ server {
   gzip_types text/plain text/css application/javascript application/json image/svg+xml;
 
   proxy_ssl_server_name on;
+  # Verify the providers' TLS certificates (nginx doesn't by default), so a spoofed upstream
+  # can never receive our API keys. Alpine's CA bundle; depth 3 allows up to two intermediates.
+  proxy_ssl_verify on;
+  proxy_ssl_trusted_certificate /etc/ssl/certs/ca-certificates.crt;
+  proxy_ssl_verify_depth 3;
   # Upstream cookies are never passed back to the browser.
   proxy_hide_header Set-Cookie;
 
